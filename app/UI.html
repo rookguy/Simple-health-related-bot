@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Mental Health Chatbot</title>
+<style>
+  /* General styling */
+  body { margin:0; font-family: Kalnia, Roboto, sans-serif; background:#f5f5f5; display:flex; justify-content:center; align-items:center; height:100vh; }
+
+  /* Chat container matches Figma frame */
+  .chat-frame { width: 375px; height: 812px; position: relative; background: white; overflow: hidden; border-radius: 20px; }
+
+  /* Header bar */
+  .header-bar { width: 375px; height: 66px; position: absolute; top: 14px; left:0; background:#EEDDB7; border-radius:23px; }
+  .header-text { width: 325px; left: 25px; top: 28px; position:absolute; text-align:center; color:#981212; font-size:12px; font-family:Kalnia; font-weight:400; line-height:20px; letter-spacing:2.4px; word-wrap:break-word; text-shadow: 0px 5px 3px rgba(183,24,24,0.25); }
+
+  /* Logo / avatar */
+  .logo { width: 173px; height: 185px; left: -3.62px; top:85.28px; position:absolute; border-radius:86.62px; }
+
+  /* Chat messages */
+  .messages { position:absolute; top:280px; left:10px; right:10px; bottom:100px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+
+  /* Chat bubbles */
+  .bubble.user { align-self:flex-end; background:#3B82F6; color:white; padding:10px 14px; border-radius:16px 16px 0 16px; max-width:70%; word-wrap:break-word; }
+  .bubble.ai { align-self:flex-start; background:#EEDDB7; color:#981212; padding:10px 14px; border-radius:16px 16px 16px 0; max-width:70%; word-wrap:break-word; }
+
+  /* Input box from Figma */
+  .input-box { width:360px; height:42px; left:8px; bottom:60px; position:absolute; border-top-left-radius:4px; border-top-right-radius:4px; display:flex; align-items:center; padding:0 10px; box-sizing:border-box; outline:1px #79747E solid; background:#FEF7FF; }
+  .input-box input { flex:1; border:none; outline:none; font-size:12px; font-family:Roboto; font-weight:400; }
+  .send-btn { width:48px; height:48px; margin-left:8px; display:flex; justify-content:center; align-items:center; background:#49454F; border-radius:50%; cursor:pointer; color:white; font-weight:bold; }
+
+  /* Floating label */
+  .input-label { position:absolute; left:10px; bottom:100px; font-size:12px; font-family:Roboto; color:#49454F; }
+</style>
+</head>
+<body>
+
+<div class="chat-frame">
+  <!-- Header -->
+  <div class="header-bar"></div>
+  <div class="header-text">Your personal assistant for all your medical issues</div>
+
+  <!-- Logo -->
+
+  <img class="logo" src="{{ url_for('static', filename='images/Cute Robot Doctor_Scientific Technologies for Health.jpg') }}" alt="Chatbot Logo">
+
+
+  <!-- Chat messages -->
+  <div class="messages" id="chat-messages"></div>
+
+  <!-- Input field -->
+  <div class="input-box">
+    <input id="user-input" placeholder="ask me anything" />
+    <div id="send-btn" class="send-btn">▶</div>
+  </div>
+
+  <!-- Floating label -->
+  <div class="input-label">Chat here</div>
+</div>
+
+<script>
+  const input = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+  const messagesDiv = document.getElementById('chat-messages');
+
+  function addBubble(text, sender){
+    const bubble = document.createElement('div');
+    bubble.textContent = text;
+    bubble.className = 'bubble ' + sender;
+    messagesDiv.appendChild(bubble);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  function sendMessage(){
+    const msg = input.value.trim();
+    if(!msg) return;
+    addBubble(msg, 'user');
+    input.value = '';
+
+    // Demo AI response (replace this with your backend call)
+    setTimeout(()=>{ addBubble("AI: You said -> " + msg, 'ai'); }, 300);
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendMessage(); });
+</script>
+
+</body>
+</html>
